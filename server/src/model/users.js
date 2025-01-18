@@ -25,17 +25,24 @@ const userSchema= new Schema({
         type: Number,
         default:0,
     },
-    is_varified:{
-        type: Number,
-        default:0,
-    },
+    // is_varified:{
+    //     type: Number,
+    //     default:0,
+    // },
     createdAt:{
         type: Date,
         default:Date.now,
     },
+    // image:{
+    //     data:Buffer,
+    //     contentType:String,
+    // },
     image:{
-        data:Buffer,
-        contentType:String,
+        data:String,
+    },
+    isBanned:{
+        type: Number,
+        default:0,
     },
 })
 const User=model("user",userSchema)

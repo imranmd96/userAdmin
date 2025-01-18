@@ -3,7 +3,7 @@ const saltRounds = 10;
 
 const securePassword= async (password) => {
     try {
-        return await bcrypt.hash(password, saltRounds)
+        return (await bcrypt.hash(password, saltRounds))
     } catch (error) {
         console.log(error)
     }
@@ -11,7 +11,7 @@ const securePassword= async (password) => {
 
 const comparePassword= async (planePassword,hahedPassword) => {
     try {
-        return await bcrypt.confirm(planePassword, hahedPassword)
+        return await bcrypt.compare(planePassword, hahedPassword)
     } catch (error) {
         console.log(error)
     }

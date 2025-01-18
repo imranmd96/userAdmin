@@ -1,15 +1,28 @@
-const { registerUser, varifyEmail, loginUser, logoutUser, userProfile } = require('../controllers/users');
-const formidableMiddleware = require('express-formidable');
-
+const { registerUser, varifyEmail, loginUser, logoutUser, userProfile ,deleteUser,updateUser,forgetPassword,resetPassword} = require('../controllers/users');
+const {isLoggedIn,isLoggedOut}=require('../middwares/auth');
+const formidable = require('express-formidable');
 const router=require('express').Router();
+const express= require('express');
+const session = require('express-session');
+const dev = require('../config');
 
-router.post("/register",formidableMiddleware(),registerUser)
+router.use(session({
+    name: 'user_session',
+    secret: dev.app.sessionSecretKey,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false,maxAge:20*6000, }
+  }))
+
+router.post("/register",registerUser)
 router.post("/varify-email",varifyEmail)
-router.post("/login",loginUser)
-router.get("/logout",logoutUser)
-router.get("/profile",userProfile)
-
-
-
+router.post("/login",isLoggedOut,loginUser)
+router.get("/logout",isLoggedIn,logoutUser)
+router.route("/")
+.get(isLoggedIn,userProfile)
+.delete(isLoggedIn,deleteUser)
+.put(isLoggedIn,updateUser)
+router.put("/forget-password",isLoggedOut,forgetPassword)
+router.put("/reset-password",isLoggedOut,resetPassword)
 
 module.exports=router;
